@@ -81,7 +81,7 @@ https://app.eraser.io/workspace/gather:hk5vpAD2Giozqlkxtable9?origin=share
 
 # 4. ERD 설계
 
-![](https://velog.velcdn.com/images/gajigaji04/post/b0e53cdc-f9f4-47d4-93ec-22e123c69c08/image.png)
+![image](https://github.com/gajigaji04/Team7_Trello/assets/132813209/0d228361-7fcf-4590-bb69-46cf5d2cdf7b)
 
 # 5. API 명세
 
