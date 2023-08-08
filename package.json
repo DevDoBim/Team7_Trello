@@ -1,0 +1,15 @@
+{
+  "name": "trello",
+  "version": "1.0.0",
+  "description": "**- 사용자 관리 기능**\r   - 로그인 / 회원가입 기능\r   - 사용자 정보 수정 및 삭제 기능",
+  "main": ".prettierrc.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prettify": "prettier --write *.js **/*.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^3.0.1"
+  }
+}
