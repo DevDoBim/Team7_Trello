@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const {User} = require('../models');
+const {Users} = require('../models');
 
 module.exports = async (req, res, next) => {
   const {authorization} = req.cookies;
@@ -22,7 +22,7 @@ module.exports = async (req, res, next) => {
     const decodedToken = jwt.verify(token, 'customized_secret_key');
     const userId = decodedToken.userId;
 
-    const user = await User.findOne({where: {userId: userId}});
+    const user = await Users.findOne({where: {userId: userId}});
     if (!user) {
       return res
         .status(401)
@@ -32,6 +32,7 @@ module.exports = async (req, res, next) => {
     res.locals.user = user; // 전달받은 사용자의 정보를 전부 저장
     next(); // middleware 종료
   } catch (error) {
+    console.log(error);
     return res.status(401).json({errorMessage: '비정상적인 접근입니다.'});
   }
 };
