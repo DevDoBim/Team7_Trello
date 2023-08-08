@@ -1,7 +1,7 @@
 'use strict';
 const {Model} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Membership extends Model {
+  class Memberships extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,34 +9,46 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // User : Comment (1:N)
-      this.hasOne(models.user, {
-        sourceKey: 'listId',
-        foreignKey: 'ListId',
-      });
-      // board : Comment (1:N)
-      this.hasOne(models.board, {
-        sourceKey: 'listId',
-        foreignKey: 'ListId',
-      });
+      // this.hasOne(models.user, {
+      //   sourceKey: 'listId',
+      //   foreignKey: 'ListId',
+      // });
+      // // board : Comment (1:N)
+      // this.hasOne(models.board, {
+      //   sourceKey: 'listId',
+      //   foreignKey: 'ListId',
+      // });
     }
   }
-  Membership.init(
+  Memberships.init(
     {
-      userId: {
-        allowNull: false, // NOT NULL
-        type: DataTypes.STRING,
-        unique: true,
+      membershipId: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER,
       },
-      boardId: {
+      UserId: {
+        type: DataTypes.INTEGER,
+      },
+      BoardId: {
+        type: DataTypes.INTEGER,
+      },
+      createdAt: {
         allowNull: false, // NOT NULL
-        type: DataTypes.STRING,
-        unique: true,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
+      updatedAt: {
+        allowNull: false, // NOT NULL
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
       },
     },
     {
       sequelize,
-      modelName: 'Membership',
+      modelName: 'Memberships',
     },
   );
-  return Membership;
+  return Memberships;
 };

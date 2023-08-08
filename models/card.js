@@ -1,37 +1,39 @@
 'use strict';
 const {Model} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Card extends Model {
+  class Cards extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // List : Board (1:N)
-      this.hasMany(models.list, {
-        sourceKey: 'cardId',
-        foreignKey: 'CardId',
+      // Lists : Cards (1:N)
+      this.belongsTo(models.Lists, {
+        targetKey: 'listId',
+        foreignKey: 'ListId',
       });
-      // Board : Comments (1:N)
-      this.hasMany(models.comment, {
+      // Cards : Comments (1:N)
+      this.hasMany(models.Comments, {
         sourceKey: 'cardId',
         foreignKey: 'CardId',
       });
     }
   }
-  Card.init(
+  Cards.init(
     {
-      userId: {
-        allowNull: false, // NOT NULL
-        autoIncrement: true, // AUTO_INCREMENT
-        primaryKey: true, // Primary Key (기본키)
+      cardId: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      listId: {
+      UserId: {
         allowNull: false, // NOT NULL
-        autoIncrement: true, // AUTO_INCREMENT
-        primaryKey: true, // Primary Key (기본키)
+        type: DataTypes.INTEGER,
+      },
+      ListId: {
+        allowNull: false, // NOT NULL
         type: DataTypes.INTEGER,
       },
       cardOrder: {
@@ -46,11 +48,21 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false, // NOT NULL
         type: DataTypes.STRING,
       },
+      createdAt: {
+        allowNull: false, // NOT NULL
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
+      updatedAt: {
+        allowNull: false, // NOT NULL
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
     },
     {
       sequelize,
-      modelName: 'Card',
+      modelName: 'Cards',
     },
   );
-  return Card;
+  return Cards;
 };
