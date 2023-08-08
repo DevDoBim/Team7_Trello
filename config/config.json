@@ -3,7 +3,7 @@
     "username": "root",
     "password": "12341234",
     "database": "team7_trello",
-    "host": "database-express.cwqm3oagxogc.ap-northeast-2.rds.amazonaws.com",
+    "host": "your database",
     "dialect": "mysql"
   },
   "test": {
