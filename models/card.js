@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const {Model} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Card extends Model {
     /**
@@ -10,18 +8,49 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      // List : Board (1:N)
+      this.hasMany(models.lists, {
+        sourceKey: 'cardId',
+        foreignKey: 'CardId',
+      });
+      // Board : Comments (1:N)
+      this.hasMany(models.comments, {
+        sourceKey: 'cardId',
+        foreignKey: 'CardId',
+      });
     }
   }
-  Card.init({
-    userId: DataTypes.INTEGER,
-    listId: DataTypes.INTEGER,
-    cardOrder: DataTypes.INTEGER,
-    title: DataTypes.STRING,
-    content: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Card',
-  });
+  Card.init(
+    {
+      userId: {
+        allowNull: false, // NOT NULL
+        autoIncrement: true, // AUTO_INCREMENT
+        primaryKey: true, // Primary Key (기본키)
+        type: DataTypes.INTEGER,
+      },
+      listId: {
+        allowNull: false, // NOT NULL
+        autoIncrement: true, // AUTO_INCREMENT
+        primaryKey: true, // Primary Key (기본키)
+        type: DataTypes.INTEGER,
+      },
+      cardOrder: {
+        allowNull: false, // NOT NULL
+        type: DataTypes.STRING,
+      },
+      title: {
+        allowNull: false, // NOT NULL
+        type: DataTypes.STRING,
+      },
+      content: {
+        allowNull: false, // NOT NULL
+        type: DataTypes.STRING,
+      },
+    },
+    {
+      sequelize,
+      modelName: 'Card',
+    },
+  );
   return Card;
 };

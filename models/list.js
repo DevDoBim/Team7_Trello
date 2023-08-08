@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const {Model} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class List extends Model {
     /**
@@ -10,17 +8,46 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      // Board : Comment (1:N)
+      this.hasOne(models.board, {
+        sourceKey: 'listId',
+        foreignKey: 'ListId',
+      });
+
+      // List : Card (1:N)
+      this.hasOne(models.board, {
+        sourceKey: 'listId',
+        foreignKey: 'ListId',
+      });
     }
   }
-  List.init({
-    userId: DataTypes.INTEGER,
-    boardId: DataTypes.INTEGER,
-    listOrder: DataTypes.INTEGER,
-    title: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'List',
-  });
+  List.init(
+    {
+      userId: {
+        allowNull: false, // NOT NULL
+        autoIncrement: true, // AUTO_INCREMENT
+        primaryKey: true, // Primary Key (기본키)
+        type: DataTypes.INTEGER,
+      },
+      boardId: {
+        allowNull: false, // NOT NULL
+        autoIncrement: true, // AUTO_INCREMENT
+        primaryKey: true, // Primary Key (기본키)
+        type: DataTypes.INTEGER,
+      },
+      listOrder: {
+        allowNull: false, // NOT NULL
+        type: DataTypes.STRING,
+      },
+      title: {
+        allowNull: false, // NOT NULL
+        type: DataTypes.STRING,
+      },
+    },
+    {
+      sequelize,
+      modelName: 'List',
+    },
+  );
   return List;
 };
