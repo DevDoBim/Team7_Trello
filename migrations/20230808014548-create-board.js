@@ -3,32 +3,32 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Boards', {
-      id: {
+      boardId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
-      userId: {
-        type: Sequelize.INTEGER
+      UserId: {
+        type: Sequelize.INTEGER,
       },
       title: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       desc: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Boards');
-  }
+  },
 };

@@ -1,53 +1,65 @@
 'use strict';
 const {Model} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class List extends Model {
+  class Lists extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // board : Comment (1:N)
-      this.hasOne(models.board, {
-        sourceKey: 'listId',
-        foreignKey: 'ListId',
+      // Boards : Lists (1:N)
+      this.belongsTo(models.Boards, {
+        targetKey: 'boardId',
+        foreignKey: 'BoardId',
       });
 
-      // List : Card (1:N)
-      this.hasOne(models.card, {
+      // Lists : Cards (1:N)
+      this.hasMany(models.Cards, {
         sourceKey: 'listId',
         foreignKey: 'ListId',
       });
     }
   }
-  List.init(
+  Lists.init(
     {
-      userId: {
-        allowNull: false, // NOT NULL
-        autoIncrement: true, // AUTO_INCREMENT
-        primaryKey: true, // Primary Key (기본키)
+      listId: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      boardId: {
+      UserId: {
         allowNull: false, // NOT NULL
-        autoIncrement: true, // AUTO_INCREMENT
-        primaryKey: true, // Primary Key (기본키)
         type: DataTypes.INTEGER,
       },
-      listOrder: {
+      BoardId: {
         allowNull: false, // NOT NULL
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
       },
       title: {
         allowNull: false, // NOT NULL
         type: DataTypes.STRING,
       },
+      listOrder: {
+        allowNull: false, // NOT NULL
+        type: DataTypes.STRING,
+      },
+      createdAt: {
+        allowNull: false, // NOT NULL
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
+      updatedAt: {
+        allowNull: false, // NOT NULL
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
     },
     {
       sequelize,
-      modelName: 'List',
+      modelName: 'Lists',
     },
   );
-  return List;
+  return Lists;
 };
