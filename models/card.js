@@ -9,12 +9,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // List : Board (1:N)
-      this.hasMany(models.lists, {
+      this.hasMany(models.list, {
         sourceKey: 'cardId',
         foreignKey: 'CardId',
       });
       // Board : Comments (1:N)
-      this.hasMany(models.comments, {
+      this.hasMany(models.comment, {
         sourceKey: 'cardId',
         foreignKey: 'CardId',
       });

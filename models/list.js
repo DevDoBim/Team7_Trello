@@ -8,14 +8,14 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // Board : Comment (1:N)
+      // board : Comment (1:N)
       this.hasOne(models.board, {
         sourceKey: 'listId',
         foreignKey: 'ListId',
       });
 
       // List : Card (1:N)
-      this.hasOne(models.board, {
+      this.hasOne(models.card, {
         sourceKey: 'listId',
         foreignKey: 'ListId',
       });
