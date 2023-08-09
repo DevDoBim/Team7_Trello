@@ -1,4 +1,4 @@
-const UserService = require('../services/user_service');
+const UserService = require('../2services/user_service');
 const jwt = require('jsonwebtoken');
 
 class UsersController {
