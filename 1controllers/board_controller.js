@@ -1,4 +1,4 @@
-const BoardService = require('../services/board_service');
+const BoardService = require('../2services/board_service');
 
 class BoardController {
   boardService = new BoardService();

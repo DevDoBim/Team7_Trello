@@ -1,4 +1,4 @@
-const BoardRepository = require('../repositories/board_repository');
+const BoardRepository = require('../3repositories/board_repository');
 
 class BoardService {
   boardRepository = new BoardRepository();

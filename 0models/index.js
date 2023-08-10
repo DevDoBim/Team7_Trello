@@ -1,3 +1,5 @@
+// models/index.js
+
 'use strict';
 
 const fs = require('fs');
@@ -46,5 +48,7 @@ Object.keys(db).forEach(modelName => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
+// console.log('List of Models:', Object.keys(db));
 
 module.exports = db;

@@ -1,4 +1,4 @@
-const {Users} = require('../models');
+const {Users} = require('../0models');
 
 class UserRepository {
   // DB에서 email 조회
