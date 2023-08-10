@@ -1,4 +1,4 @@
-const {Boards, Memberships} = require('../models');
+const {Boards, Memberships} = require('../0models');
 
 class BoardRepository {
   // # 보드 작성 API
@@ -36,9 +36,9 @@ class BoardRepository {
   // # 보드 초대 API
   inviteBoard = async (boardId, invitedUserId) => {
     await Memberships.findOrCreate({
-        where:{boardId, invitedUserId}
-    })
-  }
+      where: {boardId, invitedUserId},
+    });
+  };
 }
 
 module.exports = BoardRepository;
