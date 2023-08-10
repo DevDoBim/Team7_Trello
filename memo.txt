@@ -16,3 +16,9 @@ DB_PASS=
 DB_NAME=00_trello
 DB_DIALECT=mysql
 */
+
+내일 PR 보낼 때 적을 커밋 메세지
+1. 회원가입 에러처리 service 파일로 이동(테스트 완료)
+2. /config/config.js와 .env를 사용함에 따라 config/config.json 파일 삭제
+3. /models/index.js 파일에서 sequelize가 읽어오는 config 파일을 config.json에서 config.js로 변경(9번째 줄 변수 config)
+4. 로그인 에러처리 service 파일로 이동(테스트 완료)
