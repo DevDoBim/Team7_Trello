@@ -142,4 +142,6 @@ dist
 .svelte-kit
 config.json
 
+.backup
+
 # End of https://www.toptal.com/developers/gitignore/api/node,jspm
