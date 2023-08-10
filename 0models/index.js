@@ -23,8 +23,6 @@ if (config.use_env_variable) {
   );
 }
 
-console.log(config);
-
 fs.readdirSync(__dirname)
   .filter(file => {
     return (
@@ -51,6 +49,6 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-console.log('List of Models:', Object.keys(db));
+// console.log('List of Models:', Object.keys(db));
 
 module.exports = db;
