@@ -19,6 +19,16 @@ class UserRepository {
 
     return createUserData;
   };
+
+  // 사용자 정보 찾기
+  findOneUserById = async userId => {
+    try {
+      const user = await Users.findOne({where: {userId}});
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  };
 }
 
 module.exports = UserRepository;

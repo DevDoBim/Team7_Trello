@@ -40,6 +40,51 @@ class UsersController {
       return res.status(400).json({errorMessage: error.message});
     }
   };
+
+  // 내 정보 확인 API
+  profile = async (req, res) => {
+    try {
+        // 토큰을 기준으로 사용자 정보 검색
+        if (req.user) {
+          const user = await this.userService.findOneUser(req.user.userId);
+          return res.status(200).json({data: user});
+        } else {
+          return res.status(401).json({message: '승인되지 않음'});
+        }
+    } catch (error) {
+      console.error(error);
+      return res
+        .status(500)
+        .json({errorMessage: '서버에 에러가 발생했습니다.'});
+    }
+  };
+
+  // 내 정보 수정 API
+  updateProfile = async (req, res) => {
+    try {
+      this.isAuthenticated(req, res, async () => {
+        const {newPassword} = req.body;
+
+        if (req.user) {
+          // 토큰을 기준으로 사용자 정보 검색
+          const user = await this.userService.findOneUser(req.user.userId);
+
+          // 사용자 암호 업데이트
+          user.password = newPassword;
+          await user.save();
+
+          return res.status(200).json({message: '정보가 업데이트되었습니다.'});
+        } else {
+          return res.status(401).json({message: '승인되지 않음'});
+        }
+      });
+    } catch (error) {
+      console.error(error);
+      return res
+        .status(500)
+        .json({errorMessage: '서버에 에러가 발생했습니다.'});
+    }
+  };
 }
 
 module.exports = UsersController;
