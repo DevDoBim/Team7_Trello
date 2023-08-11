@@ -12,10 +12,13 @@ router.post('/signup', usersController.createUser);
 // 로그인 API
 router.post('/login', usersController.logIn);
 
-// 내 정보 확인 API
-router.get('/profile', usersController.profile);
+// 내 정보 확인
+// router.get('/profile/:userEmail', usersController.getProfile)
 
-// 내 정보 수정 API
-router.put('/profile', usersController.updateProfile);
+// 패스워드 변경
+// router.put('/profile/:userId', usersController.updateProfile);
+
+// 회원탈퇴
+// router.delete('/profile/:userId', usersController.deleteProfile);
 
 module.exports = router;

@@ -10,10 +10,10 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       // Lists : Cards (1:N)
-      this.hasMany(models.Cards, {
-        sourceKey: 'listId',
-        foreignKey: 'ListId',
-      });
+      // this.hasMany(models.Cards, {
+      //   sourceKey: 'listId',
+      //   foreignKey: 'ListId',
+      // }); // 임시 비활성화 - 정호중
     }
   }
   Lists.init(

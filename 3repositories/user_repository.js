@@ -6,7 +6,6 @@ class UserRepository {
     const oneUser = await Users.findOne({
       where: {email: email},
     });
-    console.log('리포지터리1');
 
     return oneUser;
   };

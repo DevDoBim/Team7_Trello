@@ -46,6 +46,7 @@ class UserService {
     );
 
     return {
+      userId: createUserData.userId,
       email: createUserData.email,
       createdAt: createUserData.createdAt,
     };
