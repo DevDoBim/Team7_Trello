@@ -82,9 +82,9 @@
 
 # 3. 와이어 프레임
 
-![](https://velog.velcdn.com/images/gajigaji04/post/5350e1d4-68fb-415a-973c-ce3d6c37770b/image.png)
+![image](https://github.com/gajigaji04/Team7_Trello/assets/132813209/e886450f-c8ad-4907-8687-156fb21b2686)
 
-https://app.eraser.io/workspace/gather:hk5vpAD2Giozqlkxtable9?origin=share
+[(https://app.eraser.io/workspace/gather:hk5vpAD2Giozqlkxtable9?origin=share)](https://app.eraser.io/workspace/gather:hk5vpAD2Giozqlkxtable9?origin=share)
 
 # 4. ERD 설계
 
