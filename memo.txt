@@ -9,10 +9,4 @@
 4. 기능이 다 완성이 되면 그때 membership 뭐시기..어쩌고... 한다.
 
 
-.env 상수 내용
-DB_HOST=
-DB_USER=
-DB_PASS=
-DB_NAME=00_trello
-DB_DIALECT=mysql
-*/
+PR 보낼 때 적을 커밋 메세지

@@ -4,9 +4,9 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const PORT = 3000;
 
-const userRouter = require('./routes/user_route');
-const listRouter = require('./routes/list_route');
-const boardRouter = require('./routes/board_route');
+const userRouter = require('./0routes/user_route');
+const listRouter = require('./0routes/list_route');
+const boardRouter = require('./0routes/board_route');
 
 app.use(express.json());
 app.use(cookieParser());
