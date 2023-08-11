@@ -35,6 +35,28 @@ class CommentService {
         text,
       );
 
+      const commentIdNumber = parseInt(commentId, 10);
+      if (isNaN(commentIdNumber)) {
+        return res
+          .status(400)
+          .json({errorMessage: '잘못된 댓글 ID 형식입니다.'});
+      }
+
+      const commentToUpdate = await Comments.findOne({
+        where: {commentId: commentIdNumber},
+      });
+
+      if (!commentToUpdate) {
+        return res.status(404).json({errorMessage: '댓글을 찾을 수 없습니다.'});
+      }
+
+      await Comments.update(
+        {text},
+        {
+          where: {commentId: commentIdNumber},
+        },
+      );
+
       if (!updatedComment) {
         throw new Error('댓글을 찾을 수 없습니다.');
       }

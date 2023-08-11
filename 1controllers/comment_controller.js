@@ -1,4 +1,5 @@
 const CommentService = require('../2services/comment_service');
+const {Comments} = require('../0models');
 
 class CommentController {
   commentService = new CommentService();
