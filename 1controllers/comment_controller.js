@@ -28,11 +28,11 @@ class CommentController {
 
   // 댓글 카드 번호로 조회
   getCommentAll = async (req, res) => {
-    const {cardId} = req.params;
+    const {cardId, commentId} = req.params;
 
     try {
-      const comments = await Comments.findAll({
-        where: {CardId: cardId},
+      const comment = await Comments.findOne({
+        where: {commentId, CardId: cardId},
         attributes: [
           'commentId',
           'UserId',
@@ -41,15 +41,14 @@ class CommentController {
           'createdAt',
           'updatedAt',
         ],
-        order: [['createdAt', 'DESC']],
       });
 
-      return res.status(200).json({data: comments});
+      return res.status(200).json({data: comment});
     } catch (error) {
       console.error(error);
       return res
         .status(500)
-        .json({errorMessage: '댓글 목록 조회에 실패하였습니다.'});
+        .json({errorMessage: '댓글 조회에 실패하였습니다.'});
     }
   };
 
@@ -62,10 +61,6 @@ class CommentController {
       const commentToUpdate = await Comments.findOne({
         where: {commentId},
       });
-
-      if (!commentToUpdate) {
-        return res.status(404).json({errorMessage: '댓글을 찾을 수 없습니다.'});
-      }
 
       await Comments.update(
         {text},
@@ -103,10 +98,6 @@ class CommentController {
       const commentToDelete = await Comments.findOne({
         where: {commentId},
       });
-
-      if (!commentToDelete) {
-        return res.status(404).json({errorMessage: '댓글을 찾을 수 없습니다.'});
-      }
 
       await Comments.destroy({
         where: {commentId},
