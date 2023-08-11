@@ -9,12 +9,19 @@ const listController = new ListController();
 
 //  리스트 만들기 API
 router.post('/lists', listController.createList_Controller);
-router.get('/lists/:listId', listController.getList_Controller);
-router.put('/lists/:listId', listController.putList_Controller);
+router.get('/boards/:boardId/lists/:listId', listController.getList_Controller);
+router.put('/boards/:boardId/lists/:listId', listController.putList_Controller);
 router.put(
-  '/lists/:listOrder/exchange',
+  '/boards/:boardId/lists/:listOrder/exchange',
   listController.exchangeList_Controller,
 );
-router.put('/lists/:listOrder/move', listController.moveList_Controller);
+router.put(
+  '/boards/:boardId/lists/:listOrder/move',
+  listController.moveList_Controller,
+);
+router.delete(
+  '/boards/:boardId/lists/:listId',
+  listController.deleteList_Controller,
+);
 
 module.exports = router;

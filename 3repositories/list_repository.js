@@ -6,9 +6,6 @@ const sequelize = Lists.sequelize;
 class ListRepository {
   //  리스트 만들기 매서드
   createList_Repository = async (BoardId, title, UserId) => {
-    // console.log('createList_Repository매서드 진입');
-    // console.log(BoardId, title);
-
     try {
       // 리스트를 만든다.
       const createList_DB = await Lists.create({
@@ -23,11 +20,8 @@ class ListRepository {
         {where: {listId: createList_DB.listId}},
       );
 
-      // console.log('000');
       const listIdForRes = createList_DB.listId;
       const titleForRes = createList_DB.title;
-
-      // console.log('1111 : ', createList_DB, listIdForRes, titleForRes);
 
       return {listIdForRes, titleForRes};
     } catch (err) {
@@ -150,6 +144,17 @@ class ListRepository {
       return moveList;
     } catch (err) {
       await t.rollback();
+    }
+  };
+
+  // 리스트 삭제 매서드
+  deleteList_Repository = async listId => {
+    try {
+      const deleteList = await Lists.destroy({where: {listId: listId}});
+
+      return deleteList;
+    } catch (err) {
+      return {status: 400, message: err.message};
     }
   };
 }
