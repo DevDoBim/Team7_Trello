@@ -60,7 +60,7 @@ class ListService {
   };
 
   //  리스트 불러오기 매서드
-  getList_Service = async listId => {
+  getList_Service = async (listId, BoardId) => {
     try {
       const getListResult = await this.listRepository.getList_Repository(
         listId,
@@ -68,7 +68,7 @@ class ListService {
       if (getListResult === null) {
         return {
           status: 400,
-          message: '리스트를 찾을 수 없습니다.',
+          message: `리스트 번호 ${listId}를 찾을 수 없습니다.`,
         };
       }
       // console.log(getListResult);
@@ -82,7 +82,7 @@ class ListService {
   };
 
   //  리스트 수정하기 매서드
-  putList_Service = async (listId, title) => {
+  putList_Service = async (listId, title, BoardId) => {
     try {
       // 입력 값 검증
       if (!listId || !title) {
@@ -195,7 +195,7 @@ class ListService {
   };
 
   //  리스트 밀기 매서드
-  moveList_Service = async (listOrder, listOrderNew) => {
+  moveList_Service = async (listOrder, listOrderNew, BoardId) => {
     try {
       // 유효성 검증
       // 바꿀 순서와 현재 순서가 같다면 거른다. (DB 참조 최소화)
@@ -246,6 +246,41 @@ class ListService {
       // console.log(moveListResult);
       return moveListResult;
     } catch (err) {}
+  };
+
+  //  리스트 삭제 매서드
+  deleteList_Service = async (BoardId, listId, sureDeleteList) => {
+    // 유효성 검증
+    if (sureDeleteList !== '1') {
+      return {
+        status: 400,
+        message: '적절하지 않은 요청으로 리스트 삭제 취소',
+      };
+    }
+
+    // 삭제할 리스트가 실존하는지 확인
+    const getListResult = await this.listRepository.getList_Repository(listId);
+    if (!getListResult) {
+      return {
+        status: 400,
+        message: `리스트 번호 ${listId}를 찾을 수 없습니다.`,
+      };
+    }
+
+    const deleteListResult = await this.listRepository.deleteList_Repository(
+      listId,
+    );
+    if (!deleteListResult) {
+      return {
+        status: 400,
+        message: '삭제 실패',
+      };
+    }
+
+    return {
+      status: 200,
+      message: `리스트 ${getListResult.listId}번 삭제하기 성공`,
+    };
   };
 }
 
