@@ -1,11 +1,10 @@
-// repositories/list_repository.js
-
-const {Lists} = require('../0models');
+const {Lists, Cards} = require('../0models');
+const {Op} = require('sequelize');
 const sequelize = Lists.sequelize;
 
 class ListRepository {
   //  리스트 만들기 매서드
-  createList_Repository = async (BoardId, title, UserId) => {
+  createList_Repository = async (UserId, BoardId, title) => {
     try {
       // 리스트를 만든다.
       const createList_DB = await Lists.create({
@@ -14,6 +13,7 @@ class ListRepository {
         UserId,
         listOrder: 0,
       });
+
       // 리스트 id와 같은 값으로 리스트 순서를 업데이트한다.
       const updateListOrder = await Lists.update(
         {listOrder: createList_DB.listId},
@@ -29,13 +29,32 @@ class ListRepository {
     }
   };
 
-  //  리스트 id로 불러오기 매서드
-  getList_Repository = async listId => {
+  //  보드 id와 리스트 id로 불러오기 매서드
+  getList_Repository = async (boardId, listId) => {
+    console.log('리포지터리1');
     const getList = await Lists.findOne({
-      where: {listId: listId},
+      where: {
+        [Op.and]: [{listId: listId}, {BoardId: boardId}],
+      },
     });
 
-    return getList;
+    console.log('리포지터리2');
+
+    if (!getList) {
+      return {
+        status: 400,
+        message: `${boardId}번 보드에서 리스트 번호 ${listId}를 찾을 수 없습니다.`,
+      };
+    }
+
+    console.log('리포지터리3');
+    const getCard = await Cards.findAll({where: {ListId: listId}});
+
+    if (!getCard) {
+      getCard = [];
+    }
+
+    return {getList, getCard};
   };
 
   //  리스트 순서로 불러오기 매서드
@@ -49,11 +68,11 @@ class ListRepository {
   };
 
   //  리스트 수정하기 매서드
-  putList_Repository = async (listId, title, listOrder) => {
+  putList_Repository = async (boardId, listId, title, listOrder) => {
     // console.log('listId :', listId);
     const putList = await Lists.update(
       {title, listOrder},
-      {where: {listId: listId}},
+      {where: {[Op.and]: [{BoardId: boardId}, {listId: listId}]}},
     );
     return putList;
   };
@@ -148,9 +167,11 @@ class ListRepository {
   };
 
   // 리스트 삭제 매서드
-  deleteList_Repository = async listId => {
+  deleteList_Repository = async (boardId, listId) => {
     try {
-      const deleteList = await Lists.destroy({where: {listId: listId}});
+      const deleteList = await Lists.destroy({
+        where: {[Op.and]: [{BoardId: boardId}, {listId: listId}]},
+      });
 
       return deleteList;
     } catch (err) {

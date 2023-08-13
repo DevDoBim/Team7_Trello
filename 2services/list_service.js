@@ -3,10 +3,10 @@ const ListRepository = require('../3repositories/list_repository');
 class ListService {
   listRepository = new ListRepository();
 
-  //  리스트 만들기 매서드
-  createList_Service = async (BoardId, title, UserId) => {
+  //  리스트 만들기 API
+  createList_Service = async (userId, boardId, title) => {
     try {
-      if (!BoardId || !title) {
+      if (!title) {
         return {
           status: 400,
           message: '필요한 값을 모두 입력해주세요.',
@@ -14,7 +14,7 @@ class ListService {
       }
 
       const cerateListComplete_Repository =
-        await this.listRepository.createList_Repository(BoardId, title, UserId);
+        await this.listRepository.createList_Repository(userId, boardId, title);
 
       console.log(
         'cerateListComplete_Repository :',
@@ -41,33 +41,42 @@ class ListService {
     }
   };
 
-  //  리스트 불러오기 매서드
-  getList_Service = async (listId, BoardId) => {
+  //  리스트 불러오기 API
+  getList_Service = async (boardId, listId) => {
     try {
-      const getListResult = await this.listRepository.getList_Repository(
+      const {getList, getCard} = await this.listRepository.getList_Repository(
+        boardId,
         listId,
       );
-      if (getListResult === null) {
+
+      if (getList === null) {
         return {
           status: 400,
-          message: `리스트 번호 ${listId}를 찾을 수 없습니다.`,
+          message: `${boardId}번 보드에서 리스트 번호 ${listId}를 찾을 수 없습니다.`,
         };
       }
-      // console.log(getListResult);
+
+      const ownCards = getCard.map(card => card.cardId);
+
       return {
-        status: 200,
-        message: `리스트 ${getListResult.listId}번 불러오기 성공`,
+        listId: getList.listId,
+        userId: getList.UserId,
+        boardId: getList.BoardId,
+        title: getList.title,
+        createdAt: getList.createdAt,
+        updatedAt: getList.updatedAt,
+        ownCards: ownCards,
       };
-    } catch (err) {
-      return {status: 400, message: err.message};
+    } catch (error) {
+      throw new Error(error);
     }
   };
 
-  //  리스트 수정하기 매서드
-  putList_Service = async (listId, title, BoardId) => {
+  //  리스트 수정하기 API
+  putList_Service = async (boardId, listId, title) => {
     try {
       // 입력 값 검증
-      if (!listId || !title) {
+      if (!boardId || !listId || !title) {
         return {
           status: 400,
           message: '필요한 값을 모두 입력해주세요.',
@@ -76,8 +85,10 @@ class ListService {
 
       // 일단 리스트 조회하기
       const getListResult = await this.listRepository.getList_Repository(
+        boardId,
         listId,
       );
+      console.log('리스트 서비스');
 
       if (getListResult === null) {
         return {
@@ -95,6 +106,7 @@ class ListService {
         };
       }
       const putListResult = await this.listRepository.putList_Repository(
+        boardId,
         listId,
         title,
       );
@@ -108,14 +120,14 @@ class ListService {
       // console.log(getListResult);
       return {
         status: 200,
-        message: `리스트 ${listId}번 수정하기 성공`,
+        message: `${boardId}번 보드의 리스트 ${listId}번 수정하기 성공`,
       };
     } catch (err) {
       return {status: 400, message: err.message};
     }
   };
 
-  //  리스트 순서 바꾸기 매서드
+  //  리스트 순서 바꾸기 API
   exchangeList_Service = async (listOrder, listOrderNew) => {
     try {
       // 유효성 검증
@@ -169,8 +181,8 @@ class ListService {
     } catch (err) {}
   };
 
-  //  리스트 밀기 매서드
-  moveList_Service = async (listOrder, listOrderNew, BoardId) => {
+  //  리스트 밀기 API
+  moveList_Service = async (listOrder, listOrderNew, boardId) => {
     try {
       // 유효성 검증
       // 바꿀 순서와 현재 순서가 같다면 거른다. (DB 참조 최소화)
@@ -223,8 +235,8 @@ class ListService {
     } catch (err) {}
   };
 
-  //  리스트 삭제 매서드
-  deleteList_Service = async (BoardId, listId, sureDeleteList) => {
+  //  리스트 삭제 API
+  deleteList_Service = async (boardId, listId, sureDeleteList) => {
     // 유효성 검증
     if (sureDeleteList !== '1') {
       return {
@@ -234,15 +246,19 @@ class ListService {
     }
 
     // 삭제할 리스트가 실존하는지 확인
-    const getListResult = await this.listRepository.getList_Repository(listId);
+    const getListResult = await this.listRepository.getList_Repository(
+      boardId,
+      listId,
+    );
     if (!getListResult) {
       return {
         status: 400,
-        message: `리스트 번호 ${listId}를 찾을 수 없습니다.`,
+        message: `${boardId}번 보드에서 리스트 번호 ${listId}를 찾을 수 없습니다.`,
       };
     }
 
     const deleteListResult = await this.listRepository.deleteList_Repository(
+      boardId,
       listId,
     );
     if (!deleteListResult) {
@@ -254,7 +270,7 @@ class ListService {
 
     return {
       status: 200,
-      message: `리스트 ${getListResult.listId}번 삭제하기 성공`,
+      message: `${boardId}번 보드에서 리스트 ${listId}번 삭제하기 성공`,
     };
   };
 }

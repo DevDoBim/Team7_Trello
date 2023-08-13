@@ -1,10 +1,12 @@
 const {Cards} = require('../0models');
+const {Op} = require('sequelize');
 
 class CardRepository {
   // 카드 생성
-  addCard = async (userId, title, content, status) => {
+  addCard = async (listId, userId, title, content, status) => {
     console.log('리포지터리1');
     const addCardData = await Cards.create({
+      ListId: listId,
       UserId: userId,
       title: title,
       content: content,
@@ -25,9 +27,11 @@ class CardRepository {
   };
 
   // 카드 번호로 조회
-  findOneCard = async cardId => {
+  findOneCard = async (listId, cardId) => {
     console.log('카드 번호로 조회 리포지터리 1');
-    const foundedCard = await Cards.findOne({where: {cardId: cardId}});
+    const foundedCard = await Cards.findOne({
+      where: {[Op.and]: [{ListId: listId}, {cardId: cardId}]},
+    });
     console.log('카드 번호로 조회 리포지터리 2');
     return foundedCard;
   };
