@@ -6,7 +6,7 @@ class CardController {
   // 카드 생성
   NewCard = async (req, res) => {
     const {userId} = res.locals.user;
-    const {title, content} = req.body;
+    const {title, content, status} = req.body;
 
     try {
       console.log('컨트롤러1');
@@ -14,6 +14,7 @@ class CardController {
         userId,
         title,
         content,
+        status,
       );
       console.log('컨트롤러2');
       return res
@@ -52,11 +53,16 @@ class CardController {
   // 카드 수정
   putCard = async (req, res) => {
     const {cardId} = req.params;
-    const {title, content} = req.body;
+    const {title, content, status} = req.body;
 
     try {
       console.log('카드 수정 컨트롤러 1');
-      const card = await this.cardService.updateCard(cardId, title, content);
+      const card = await this.cardService.updateCard(
+        cardId,
+        title,
+        content,
+        status,
+      );
       console.log('카드 수정 컨트롤러 2');
       return res
         .status(200)

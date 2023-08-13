@@ -11,9 +11,17 @@ module.exports = {
       },
       CardId: {
         type: Sequelize.INTEGER,
+        references: {
+          model: 'Cards',
+          key: 'cardId',
+        },
       },
       UserId: {
         type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'userId',
+        },
       },
       text: {
         type: Sequelize.STRING,

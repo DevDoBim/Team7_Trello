@@ -40,6 +40,10 @@ module.exports = (sequelize, DataTypes) => {
       //   allowNull: false, // NOT NULL
       //   type: DataTypes.STRING,
       // }, // List에서 확인 가능한 Card 목록의 순서를 조정하는 용도, card CRUD 우선 후 활성화
+      status: {
+        allowNull: false,
+        type: DataTypes.ENUM('준비', '진행', '완료', '장애'),
+      },
       title: {
         allowNull: false, // NOT NULL
         type: DataTypes.STRING,

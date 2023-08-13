@@ -2,12 +2,13 @@ const {Cards} = require('../0models');
 
 class CardRepository {
   // 카드 생성
-  addCard = async (userId, title, content) => {
+  addCard = async (userId, title, content, status) => {
     console.log('리포지터리1');
     const addCardData = await Cards.create({
       UserId: userId,
       title: title,
       content: content,
+      status: status,
     });
     console.log('리포지터리2');
 
@@ -32,12 +33,13 @@ class CardRepository {
   };
 
   // 카드 수정
-  updateCard = async (cardId, title, content) => {
+  updateCard = async (cardId, title, content, status) => {
     console.log('카드 수정 리포지터리 1');
     const updateCard = await Cards.update(
       {
         title: title,
         content: content,
+        status: status,
       },
       {
         where: {cardId: cardId},

@@ -11,9 +11,17 @@ module.exports = {
       },
       UserId: {
         type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'userId',
+        },
       },
       BoardId: {
         type: Sequelize.INTEGER,
+        references: {
+          model: 'Boards',
+          key: 'boardId',
+        },
       },
       createdAt: {
         allowNull: false,
