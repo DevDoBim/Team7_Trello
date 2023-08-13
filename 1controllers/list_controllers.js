@@ -1,6 +1,4 @@
-const ListService = require('../2services/list_serivce');
-
-console.log('리스트 컨트롤러 진입');
+const ListService = require('../2services/list_service');
 
 class ListController {
   listService = new ListService();
@@ -8,13 +6,14 @@ class ListController {
   //  리스트 만들기 API
   createList_Controller = async (req, res) => {
     try {
-      const {UserId} = res.locals.user;
-      const {title, BoardId} = req.body;
+      const {userId} = res.locals.user;
+      const {boardId} = req.params;
+      const {title} = req.body;
 
       const {status, message} = await this.listService.createList_Service(
-        BoardId,
+        userId,
+        boardId,
         title,
-        UserId,
       );
       return res.status(status).json({message});
     } catch (err) {
@@ -25,13 +24,11 @@ class ListController {
   //  리스트 불러오기 API
   getList_Controller = async (req, res) => {
     try {
-      const {listId, BoardId} = req.params;
+      const {boardId, listId} = req.params;
 
-      const {status, message} = await this.listService.getList_Service(
-        listId,
-        BoardId,
-      );
-      return res.status(status).json({message});
+      const message = await this.listService.getList_Service(boardId, listId);
+
+      return res.status(200).json(message);
     } catch (err) {
       return {status: 400, message: err.message};
     }
@@ -40,13 +37,13 @@ class ListController {
   //  리스트 수정하기 API
   putList_Controller = async (req, res) => {
     try {
-      const {listId, BoardId} = req.params;
+      const {boardId, listId} = req.params;
       const {title} = req.body;
 
       const {status, message} = await this.listService.putList_Service(
+        boardId,
         listId,
         title,
-        BoardId,
       );
       return res.status(status).json({message});
     } catch (err) {
@@ -91,11 +88,11 @@ class ListController {
   // 리스트 지우기 API
   deleteList_Controller = async (req, res) => {
     try {
-      const {BoardId, listId} = req.params;
+      const {boardId, listId} = req.params;
       const {sureDeleteList} = req.body;
 
       const {status, message} = await this.listService.deleteList_Service(
-        BoardId,
+        boardId,
         listId,
         sureDeleteList,
       );

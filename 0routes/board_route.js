@@ -7,6 +7,7 @@ const boardController = new BoardController();
 
 router.post('/boards', authMiddleware, boardController.createBoard);
 router.get('/boards', boardController.getBoard);
+router.get('/boards/:boardId', authMiddleware, boardController.getOneBoard);
 router.put('/boards/:boardId', authMiddleware, boardController.updateBoard);
 router.delete('/boards/:boardId', authMiddleware, boardController.deleteBoard);
 

@@ -42,6 +42,17 @@ class BoardController {
     }
   };
 
+  // 보드 상세 조회 API
+  getOneBoard = async (req, res) => {
+    const {boardId} = req.params;
+    try {
+      const board = await this.boardService.findOneBoard(boardId);
+      return res.status(200).json(board);
+    } catch (error) {
+      return res.status(400).json({errorMessage: error.message});
+    }
+  };
+
   // # 보드 수정 API
   updateBoard = async (req, res) => {
     const {userId} = res.locals.user;

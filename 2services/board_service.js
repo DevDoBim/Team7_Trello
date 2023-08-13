@@ -24,6 +24,34 @@ class BoardService {
     return await this.boardRepository.getBoard();
   };
 
+  // 보드 번호로 조회 API
+  findOneBoard = async boardId => {
+    if (!boardId) {
+      throw new Error('보드 번호를 다시 확인해주세요.');
+    }
+
+    try {
+      const {board, lists} = await this.boardRepository.findOneBoard(boardId);
+      if (!board) {
+        throw new Error('보드 번호를 다시 확인해주세요.');
+      }
+
+      const ownLists = lists.map(list => list.listId);
+
+      return {
+        boardId: board.boardId,
+        userId: board.UserId,
+        title: board.title,
+        desc: board.desc,
+        createdAt: board.createdAt,
+        updatedAt: board.updatedAt,
+        ownLists: ownLists,
+      };
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
   // # 보드 수정 API
   updateBoard = async (UserId, boardId, title, desc) => {
     const updatedBoard = await this.boardRepository.findBoard(boardId);

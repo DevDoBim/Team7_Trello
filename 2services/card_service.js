@@ -4,9 +4,11 @@ class CardService {
   cardRepository = new CardRepository();
 
   // 카드 생성
-  addCard = async (userId, title, content, status) => {
-    if (!userId) {
-      throw new Error('로그인 후 사용 가능합니다..');
+  addCard = async (listId, userId, title, content, status) => {
+    if (!listId) {
+      throw new Error('리스트 번호를 확인해주세요.');
+    } else if (!userId) {
+      throw new Error('로그인 후 사용 가능합니다.');
     } else if (!title) {
       throw new Error('카드의 제목을 입력해주세요.');
     } else if (!content) {
@@ -28,6 +30,7 @@ class CardService {
     try {
       console.log('서비스1');
       const addCardData = await this.cardRepository.addCard(
+        listId,
         userId,
         title,
         content,
@@ -36,6 +39,7 @@ class CardService {
 
       console.log('서비스2');
       return {
+        listId: addCardData.listId,
         userId: addCardData.userId,
         title: addCardData.title,
         content: addCardData.content,
@@ -61,6 +65,7 @@ class CardService {
       return allCard.map(card => {
         return {
           cardId: card.cardId,
+          listId: card.ListId,
           userId: card.UserId,
           status: card.status,
           title: card.title,
@@ -75,7 +80,7 @@ class CardService {
   };
 
   // 카드 번호로 조회
-  findOneCard = async cardId => {
+  findOneCard = async (listId, cardId) => {
     if (!cardId) {
       throw new Error('카드 번호를 다시 확인해주세요.');
     }
@@ -148,15 +153,18 @@ class CardService {
   // 카드 순서 이동
 
   // 카드 삭제
-  deleteCard = async cardId => {
-    const cardExistCheck = await this.cardRepository.findOneCard(cardId);
+  deleteCard = async (listId, cardId) => {
+    const cardExistCheck = await this.cardRepository.findOneCard(
+      listId,
+      cardId,
+    );
     if (!cardExistCheck) {
       throw new Error('카드 번호를 다시 확인해주세요.');
     }
 
     try {
       console.log('카드 삭제 서비스 1');
-      await this.cardRepository.deleteCard(cardId);
+      await this.cardRepository.deleteCard(listId, cardId);
       console.log('카드 삭제 서비스 2');
     } catch (error) {
       throw new Error(error);

@@ -1,4 +1,4 @@
-const {Boards, Memberships} = require('../0models');
+const {Boards, Memberships, Lists} = require('../0models');
 
 class BoardRepository {
   // # 보드 작성 API
@@ -11,9 +11,16 @@ class BoardRepository {
   getBoard = async () => {
     return await Boards.findAll({});
   };
+
   // # 보드 id로 조회
-  findBoard = async boardId => {
-    return await Boards.findByPk(boardId);
+  findOneBoard = async boardId => {
+    const board = await Boards.findOne({where: {boardId: boardId}});
+    const lists = await Lists.findAll({where: {BoardId: boardId}});
+
+    return {
+      board,
+      lists,
+    };
   };
 
   // # 보드 수정 API

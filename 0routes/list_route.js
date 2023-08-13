@@ -12,6 +12,8 @@ router.post(
   authMiddleware,
   listController.createList_Controller,
 );
+
+// 리스트 조회 API
 router.get(
   '/boards/:boardId/lists/:listId',
   authMiddleware,
@@ -25,7 +27,7 @@ router.put(
   listController.putList_Controller,
 );
 
-// 카드 순서 변경같은데 시연 보여달라고 할것
+// 카드 순서 변경같은데 시연 보여달라고 해야지
 router.put(
   '/boards/:boardId/lists/:listOrder/exchange',
   listController.exchangeList_Controller,
