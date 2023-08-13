@@ -1,4 +1,4 @@
-const {Cards} = require('../0models');
+const {Cards, Comments} = require('../0models');
 const {Op} = require('sequelize');
 
 class CardRepository {
@@ -18,9 +18,9 @@ class CardRepository {
   };
 
   // 카드 전제 조회
-  findAllCard = async () => {
+  findAllCard = async listId => {
     console.log('카드 전체 조회 리포지터리 1');
-    const cards = await Cards.findAll();
+    const cards = await Cards.findAll({where: {ListId: listId}});
 
     console.log('카드 전체 조회 리포지터리 2');
     return cards;
@@ -32,34 +32,39 @@ class CardRepository {
     const foundedCard = await Cards.findOne({
       where: {[Op.and]: [{ListId: listId}, {cardId: cardId}]},
     });
+    const ownComments = await Comments.findAll({where: {CardId: cardId}});
     console.log('카드 번호로 조회 리포지터리 2');
-    return foundedCard;
+    return {foundedCard, ownComments};
   };
 
   // 카드 수정
-  updateCard = async (cardId, title, content, status) => {
+  updateCard = async (listId, cardId, title, content, status) => {
     console.log('카드 수정 리포지터리 1');
-    const updateCard = await Cards.update(
+    await Cards.update(
       {
         title: title,
         content: content,
         status: status,
       },
       {
-        where: {cardId: cardId},
+        where: {[Op.and]: [{ListId: listId}, {cardId: cardId}]},
       },
     );
     console.log('카드 수정 리포지터리 2');
-    return updateCard;
+
+    const updatedCard = await this.findOneCard(listId, cardId);
+    console.log('카드 수정 리포지터리 3');
+
+    return updatedCard;
   };
 
   // 카드 순서 이동
 
   // 카드 삭제
-  deleteCard = async cardId => {
+  deleteCard = async (listId, cardId) => {
     console.log('카드 삭제 리포지터리 1');
     await Cards.destroy({
-      where: {cardId: cardId},
+      where: {[Op.and]: [{ListId: listId}, {cardId: cardId}]},
     });
     console.log('카드 삭제 리포지터리 2');
     return;
