@@ -49,7 +49,7 @@ class ListService {
         listId,
       );
 
-      if (getList === null) {
+      if (!getList) {
         return {
           status: 400,
           message: `${boardId}번 보드에서 리스트 번호 ${listId}를 찾을 수 없습니다.`,
@@ -88,12 +88,12 @@ class ListService {
         boardId,
         listId,
       );
-      console.log('리스트 서비스');
+      console.log('리스트 서비스 :', getListResult);
 
       if (getListResult === null) {
         return {
           status: 400,
-          message: '리스트를 찾을 수 없습니다.',
+          message: `${boardId}번 보드에서 리스트 ${listId} 번을 찾을 수 없습니다.`,
         };
       }
       // console.log(getListResult);
@@ -250,7 +250,7 @@ class ListService {
       boardId,
       listId,
     );
-    if (!getListResult) {
+    if (getListResult === null) {
       return {
         status: 400,
         message: `${boardId}번 보드에서 리스트 번호 ${listId}를 찾을 수 없습니다.`,
