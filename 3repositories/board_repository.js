@@ -22,6 +22,11 @@ class BoardRepository {
       lists,
     };
   };
+  
+  // # 수정, 삭제, 초대에 필요한 id 조회
+  findBoard = async boardId => {
+    return await Boards.findByPk(boardId);
+  };
 
   // # 보드 수정 API
   updateBoard = async (boardId, title, desc) => {
