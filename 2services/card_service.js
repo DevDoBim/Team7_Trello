@@ -51,10 +51,10 @@ class CardService {
   };
 
   // 카드 전체 조회
-  findAllCard = async () => {
+  findAllCard = async listId => {
     console.log('카드 전제 조회 서비스 1');
     try {
-      const allCard = await this.cardRepository.findAllCard();
+      const allCard = await this.cardRepository.findAllCard(listId);
 
       allCard.sort((a, b) => {
         return b.createdAt - a.createdAt;
@@ -81,25 +81,33 @@ class CardService {
 
   // 카드 번호로 조회
   findOneCard = async (listId, cardId) => {
-    if (!cardId) {
+    if (!listId) {
+      throw new Error('리스트 번호를 다시 확인해주세요.');
+    } else if (!cardId) {
       throw new Error('카드 번호를 다시 확인해주세요.');
     }
     console.log('카드 번호로 조회 서비스 1');
     try {
-      const foundedCard = await this.cardRepository.findOneCard(cardId);
+      const {foundedCard, ownComments} = await this.cardRepository.findOneCard(
+        listId,
+        cardId,
+      );
       if (!foundedCard) {
         throw new Error('카드 번호를 다시 확인해주세요.');
       }
+
+      const ownCmt = ownComments.map(cmt => cmt.cardId);
 
       console.log('카드 번호로 조회 서비스 2');
       return {
         cardId: foundedCard.cardId,
         userId: foundedCard.UserId,
-        status: foundedCard.UserId,
+        status: foundedCard.status,
         title: foundedCard.title,
         content: foundedCard.content,
         createdAt: foundedCard.createdAt,
         updatedAt: foundedCard.updatedAt,
+        ownComments: ownCmt,
       };
     } catch (error) {
       throw new Error(error);
@@ -107,15 +115,18 @@ class CardService {
   };
 
   // 카드 수정
-  updateCard = async (cardId, title, content, status) => {
-    const cardExistCheck = await this.cardRepository.findOneCard(cardId);
+  updateCard = async (listId, cardId, title, content, status) => {
+    const cardExistCheck = await this.cardRepository.findOneCard(
+      listId,
+      cardId,
+    );
     if (!cardId) {
       throw new Error('카드 번호를 다시 확인해주세요.');
     } else if (!title) {
       throw new Error('수정할 카드의 제목을 입력해주세요.');
     } else if (!content) {
       throw new Error('수정할 카드의 내용을 입력해주세요.');
-    } else if (!cardExistCheck) {
+    } else if (!cardExistCheck.foundedCard) {
       throw new Error('카드 번호를 다시 확인해주세요.');
     } else if (
       !(
@@ -132,18 +143,23 @@ class CardService {
 
     try {
       console.log('카드 수정 서비스 1');
-      await this.cardRepository.updateCard(cardId, title, content, status);
-
-      const updatedCard = await this.cardRepository.findOneCard(cardId);
+      const updatedCard = await this.cardRepository.updateCard(
+        listId,
+        cardId,
+        title,
+        content,
+        status,
+      );
+      console.log('카드 수정 서비스 2');
 
       return {
-        cardId: updatedCard.cardId,
-        userId: updatedCard.UserId,
-        title: updatedCard.title,
-        content: updatedCard.content,
-        status: updatedCard.status,
-        createdAt: updatedCard.createdAt,
-        updatedAt: updatedCard.updatedAt,
+        cardId: updatedCard.foundedCard.cardId,
+        userId: updatedCard.foundedCard.UserId,
+        title: updatedCard.foundedCard.title,
+        content: updatedCard.foundedCard.content,
+        status: updatedCard.foundedCard.status,
+        createdAt: updatedCard.foundedCard.createdAt,
+        updatedAt: updatedCard.foundedCard.updatedAt,
       };
     } catch (error) {
       throw new Error(error);
@@ -158,7 +174,7 @@ class CardService {
       listId,
       cardId,
     );
-    if (!cardExistCheck) {
+    if (!cardExistCheck.foundedCard) {
       throw new Error('카드 번호를 다시 확인해주세요.');
     }
 

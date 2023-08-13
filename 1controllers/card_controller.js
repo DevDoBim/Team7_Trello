@@ -30,8 +30,9 @@ class CardController {
   // 카드 전제 조회
   getCardAll = async (req, res) => {
     try {
+      const {listId} = req.params;
       console.log('카드 전제 조회 컨트롤러 1');
-      const allCard = await this.cardService.findAllCard();
+      const allCard = await this.cardService.findAllCard(listId);
       console.log('카드 전제 조회 컨트롤러 2');
       return res.status(200).json({data: allCard});
     } catch (error) {
@@ -54,12 +55,13 @@ class CardController {
 
   // 카드 수정
   putCard = async (req, res) => {
-    const {cardId} = req.params;
+    const {listId, cardId} = req.params;
     const {title, content, status} = req.body;
 
     try {
       console.log('카드 수정 컨트롤러 1');
       const card = await this.cardService.updateCard(
+        listId,
         cardId,
         title,
         content,
