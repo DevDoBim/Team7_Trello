@@ -28,7 +28,6 @@ class CardService {
     }
 
     try {
-      console.log('서비스1');
       const addCardData = await this.cardRepository.addCard(
         listId,
         userId,
@@ -37,10 +36,10 @@ class CardService {
         status,
       );
 
-      console.log('서비스2');
       return {
-        listId: addCardData.listId,
-        userId: addCardData.userId,
+        cardId: addCardData.cardId,
+        listId: addCardData.ListId,
+        userId: addCardData.UserId,
         title: addCardData.title,
         content: addCardData.content,
         status: addCardData.status,
@@ -52,15 +51,12 @@ class CardService {
 
   // 카드 전체 조회
   findAllCard = async listId => {
-    console.log('카드 전제 조회 서비스 1');
     try {
       const allCard = await this.cardRepository.findAllCard(listId);
 
       allCard.sort((a, b) => {
         return b.createdAt - a.createdAt;
       });
-
-      console.log('카드 전제 조회 서비스 2');
 
       return allCard.map(card => {
         return {
@@ -86,7 +82,7 @@ class CardService {
     } else if (!cardId) {
       throw new Error('카드 번호를 다시 확인해주세요.');
     }
-    console.log('카드 번호로 조회 서비스 1');
+
     try {
       const {foundedCard, ownComments} = await this.cardRepository.findOneCard(
         listId,
@@ -96,9 +92,8 @@ class CardService {
         throw new Error('카드 번호를 다시 확인해주세요.');
       }
 
-      const ownCmt = ownComments.map(cmt => cmt.cardId);
+      const ownCmt = ownComments.map(cmt => cmt.text);
 
-      console.log('카드 번호로 조회 서비스 2');
       return {
         cardId: foundedCard.cardId,
         userId: foundedCard.UserId,
@@ -142,7 +137,6 @@ class CardService {
     }
 
     try {
-      console.log('카드 수정 서비스 1');
       const updatedCard = await this.cardRepository.updateCard(
         listId,
         cardId,
@@ -150,7 +144,6 @@ class CardService {
         content,
         status,
       );
-      console.log('카드 수정 서비스 2');
 
       return {
         cardId: updatedCard.foundedCard.cardId,
@@ -179,9 +172,7 @@ class CardService {
     }
 
     try {
-      console.log('카드 삭제 서비스 1');
       await this.cardRepository.deleteCard(listId, cardId);
-      console.log('카드 삭제 서비스 2');
     } catch (error) {
       throw new Error(error);
     }

@@ -10,7 +10,6 @@ class CardController {
     const {title, content, status} = req.body;
 
     try {
-      console.log('컨트롤러1');
       const addCardData = await this.cardService.addCard(
         listId,
         userId,
@@ -18,7 +17,7 @@ class CardController {
         content,
         status,
       );
-      console.log('컨트롤러2');
+
       return res
         .status(200)
         .json({data: addCardData, message: '카드 등록이 완료되었습니다.'});
@@ -31,9 +30,9 @@ class CardController {
   getCardAll = async (req, res) => {
     try {
       const {listId} = req.params;
-      console.log('카드 전제 조회 컨트롤러 1');
+
       const allCard = await this.cardService.findAllCard(listId);
-      console.log('카드 전제 조회 컨트롤러 2');
+
       return res.status(200).json({data: allCard});
     } catch (error) {
       return res.status(400).json({errorMessage: error.message});
@@ -44,9 +43,8 @@ class CardController {
   getCard = async (req, res) => {
     const {listId, cardId} = req.params;
     try {
-      console.log('카드 번호로 조회 컨트롤러 1');
       const card = await this.cardService.findOneCard(listId, cardId);
-      console.log('카드 번호로 조회 컨트롤러 2');
+
       return res.status(200).json(card);
     } catch (error) {
       return res.status(400).json({errorMessage: error.message});
@@ -59,7 +57,6 @@ class CardController {
     const {title, content, status} = req.body;
 
     try {
-      console.log('카드 수정 컨트롤러 1');
       const card = await this.cardService.updateCard(
         listId,
         cardId,
@@ -67,7 +64,7 @@ class CardController {
         content,
         status,
       );
-      console.log('카드 수정 컨트롤러 2');
+
       return res
         .status(200)
         .json({message: '카드 수정이 완료되었습니다.', data: card});
@@ -82,9 +79,8 @@ class CardController {
   deleteCard = async (req, res) => {
     const {listId, cardId} = req.params;
     try {
-      console.log('카드 삭제 컨트롤러 1');
       await this.cardService.deleteCard(listId, cardId);
-      console.log('카드 삭제 컨트롤러 2');
+
       return res
         .status(200)
         .json({cardId, message: '카드 삭제가 완료되었습니다.'});
