@@ -9,28 +9,28 @@ const commentController = new CommentController();
 router.post(
   '/cards/:cardId/comments',
   authMiddleware,
-  commentController.NewComment.bind(commentController),
+  commentController.NewComment,
 );
 
 // 댓글 카드 번호로 조회
 router.get(
   '/cards/:cardId/comments',
   authMiddleware,
-  commentController.getCommentAll.bind(commentController),
+  commentController.getCommentAll,
 );
 
 // 댓글 수정
 router.put(
   '/cards/:cardId/comments/:commentId',
   authMiddleware,
-  commentController.putComment.bind(commentController),
+  commentController.putComment,
 );
 
 // 댓글 삭제
 router.delete(
   '/cards/:cardId/comments/:commentId',
   authMiddleware,
-  commentController.deleteComment.bind(commentController),
+  commentController.deleteComment,
 );
 
 module.exports = router;
