@@ -31,23 +31,17 @@ class ListRepository {
 
   //  보드 id와 리스트 id로 불러오기 매서드
   getList_Repository = async (boardId, listId) => {
-    console.log('리포지터리1');
     const getList = await Lists.findOne({
       where: {
         [Op.and]: [{listId: listId}, {BoardId: boardId}],
       },
     });
 
-    console.log('리포지터리2');
-
+    console.log('리포 :', getList);
     if (!getList) {
-      return {
-        status: 400,
-        message: `${boardId}번 보드에서 리스트 번호 ${listId}를 찾을 수 없습니다.`,
-      };
+      return getList;
     }
 
-    console.log('리포지터리3');
     const getCard = await Cards.findAll({where: {ListId: listId}});
 
     if (!getCard) {
