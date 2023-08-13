@@ -14,7 +14,7 @@ router.post(
 
 // 댓글 카드 번호로 조회
 router.get(
-  '/cards/:cardId/comments/:commentId',
+  '/cards/:cardId/comments',
   authMiddleware,
   commentController.getCommentAll.bind(commentController),
 );

@@ -28,11 +28,11 @@ class CommentController {
 
   // 댓글 카드 번호로 조회
   getCommentAll = async (req, res) => {
-    const {cardId, commentId} = req.params;
+    const {cardId} = req.params;
 
     try {
-      const comment = await Comments.findOne({
-        where: {commentId, CardId: cardId},
+      const comment = await Comments.findAll({
+        where: {CardId: cardId},
         attributes: [
           'commentId',
           'UserId',
