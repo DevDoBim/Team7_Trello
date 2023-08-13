@@ -1,33 +1,15 @@
 const ListRepository = require('../3repositories/list_repository');
-const jwt = require('jsonwebtoken');
-
-console.log('리스트 서비스 진입');
-
-const validationCheck =
-  /^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?~ㄱ-ㅎ가-힣ㅏ-ㅣ]+$/;
-const validationMessage =
-  '리스트의 이름은 영어 대/소문자, 숫자 사용가능, 일부 특수문자 사용불가';
 
 class ListService {
   listRepository = new ListRepository();
 
   //  리스트 만들기 매서드
   createList_Service = async (BoardId, title, UserId) => {
-    // console.log('createList_Service매서드 진입');
-    // console.log(BoardId, title);
     try {
-      // 검증
-      if (!BoardId || !title || !UserId) {
+      if (!BoardId || !title) {
         return {
           status: 400,
           message: '필요한 값을 모두 입력해주세요.',
-        };
-      }
-
-      if (!validationCheck.test(title)) {
-        return {
-          status: 400,
-          message: validationMessage,
         };
       }
 
@@ -89,13 +71,6 @@ class ListService {
         return {
           status: 400,
           message: '필요한 값을 모두 입력해주세요.',
-        };
-      }
-
-      if (!validationCheck.test(title)) {
-        return {
-          status: 400,
-          message: validationMessage,
         };
       }
 

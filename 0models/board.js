@@ -13,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: 'userId',
         foreignKey: 'UserId',
       });
+      // Boards : Lists (1:N)
+      this.hasMany(models.Lists, {
+        sourceKey: 'boardId',
+        foreignKey: 'BoardId',
+      });
       // Memberships : Boards (1:N)
       // this.belongsTo(models.Memberships, {
       //   sourceKey: 'boardId',
