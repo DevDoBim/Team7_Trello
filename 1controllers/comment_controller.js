@@ -1,5 +1,5 @@
 const CommentService = require('../2services/comment_service');
-const {Comments} = require('../0models');
+// const {Comments} = require('../0models');
 
 class CommentController {
   commentService = new CommentService();
@@ -11,17 +11,19 @@ class CommentController {
     const {text} = req.body;
 
     try {
-      const createdComment = await Comments.create({
-        UserId: userId,
-        CardId: cardId,
+      const createdComment = await this.commentService.NewComment(
+        cardId,
+        userId,
         text,
-      });
+      );
 
-      return res.status(201).json({data: createdComment});
+      return res
+        .status(201)
+        .json({data: createdComment, message: '댓글 등록이 완료되었습니다.'});
     } catch (error) {
       console.error(error);
       return res
-        .status(500)
+        .status(400)
         .json({errorMessage: '댓글 생성에 실패하였습니다.'});
     }
   };
@@ -31,19 +33,9 @@ class CommentController {
     const {cardId} = req.params;
 
     try {
-      const comment = await Comments.findAll({
-        where: {CardId: cardId},
-        attributes: [
-          'commentId',
-          'UserId',
-          'CardId',
-          'text',
-          'createdAt',
-          'updatedAt',
-        ],
-      });
+      const comments = await this.commentService.findAllCmt(cardId);
 
-      return res.status(200).json({data: comment});
+      return res.status(200).json({data: comments});
     } catch (error) {
       console.error(error);
       return res
@@ -54,34 +46,19 @@ class CommentController {
 
   // 댓글 수정
   putComment = async (req, res) => {
-    const {commentId} = req.params;
+    const {cardId, commentId} = req.params;
     const {text} = req.body;
 
     try {
-      const commentToUpdate = await Comments.findOne({
-        where: {commentId},
-      });
-
-      await Comments.update(
-        {text},
-        {
-          where: {commentId},
-        },
+      const updatedComment = await this.commentService.updateComment(
+        cardId,
+        commentId,
+        text,
       );
 
-      const updatedComment = await Comments.findOne({
-        where: {commentId},
-        attributes: [
-          'commentId',
-          'UserId',
-          'CardId',
-          'text',
-          'createdAt',
-          'updatedAt',
-        ],
-      });
-
-      return res.status(200).json({data: updatedComment});
+      return res
+        .status(200)
+        .json({message: '댓글 수정이 완료되었습니다.', data: updatedComment});
     } catch (error) {
       console.error(error);
       return res
@@ -92,16 +69,10 @@ class CommentController {
 
   // 댓글 삭제
   deleteComment = async (req, res) => {
-    const {commentId} = req.params;
+    const {cardId, commentId} = req.params;
 
     try {
-      const commentToDelete = await Comments.findOne({
-        where: {commentId},
-      });
-
-      await Comments.destroy({
-        where: {commentId},
-      });
+      await this.commentService.deleteComment(cardId, commentId);
 
       return res.status(200).json({message: '댓글 삭제를 완료하였습니다.'});
     } catch (error) {
