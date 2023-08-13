@@ -15,6 +15,7 @@ module.exports = {
           model: 'Cards',
           key: 'cardId',
         },
+        onDelete: 'CASCADE',
       },
       UserId: {
         type: Sequelize.INTEGER,

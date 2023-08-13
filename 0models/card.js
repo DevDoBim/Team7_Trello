@@ -9,10 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // Lists : Cards (1:N)
-      // this.belongsTo(models.Lists, {
-      //   targetKey: 'listId',
-      //   foreignKey: 'ListId',
-      // });
+      this.belongsTo(models.Lists, {
+        targetKey: 'listId',
+        foreignKey: 'ListId',
+      });
       // Cards : Comments (1:N)
       this.hasMany(models.Comments, {
         sourceKey: 'cardId',
@@ -32,10 +32,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false, // NOT NULL
         type: DataTypes.INTEGER,
       },
-      // ListId: {
-      //   allowNull: false, // NOT NULL
-      //   type: DataTypes.INTEGER,
-      // }, // List와 Card는 1대N 관계, card CRUD 작성 우선 후 연결
+      ListId: {
+        allowNull: false, // NOT NULL
+        type: DataTypes.INTEGER,
+      },
       // cardOrder: {
       //   allowNull: false, // NOT NULL
       //   type: DataTypes.STRING,
