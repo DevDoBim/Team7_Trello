@@ -1,16 +1,16 @@
 'use strict';
 const {Model} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Memberships extends Model {
+  class MembershipUsers extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // Memberships : MembershipUsers (1:N)
-      this.hasMany(models.MembershipUsers, {
-        sourceKey: 'membershipId',
+      //   Memberships : MembershipUsers (1:N)
+      this.belongsTo(models.Memberships, {
+        targetKey: 'membershipId',
         foreignKey: 'membershipId',
       });
       // // board : Comment (1:N)
@@ -20,18 +20,18 @@ module.exports = (sequelize, DataTypes) => {
       // });
     }
   }
-  Memberships.init(
+  MembershipUsers.init(
     {
-      membershipId: {
+      MembershipUserId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      // BoardId: {
-      //   type: DataTypes.INTEGER,
-      // },
-      ownerId: {
+      UserId: {
+        type: DataTypes.INTEGER,
+      },
+      MembershipId: {
         type: DataTypes.INTEGER,
       },
       createdAt: {
@@ -47,8 +47,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'Memberships',
+      modelName: 'MembershipUsers',
     },
   );
-  return Memberships;
+  return MembershipUsers;
 };
